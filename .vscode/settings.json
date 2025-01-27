@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "xprotocol",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 33060,
+            "driver": "MySQL",
+            "name": "yegnaschool",
+            "group": "yegnaschool",
+            "username": "yegnaschool",
+            "database": "admins",
+            "password": "yoyogaga0000",
+            "connectionTimeout": 60
+        }
+    ]
+}
