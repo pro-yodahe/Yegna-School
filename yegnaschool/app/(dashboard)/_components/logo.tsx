@@ -1,49 +1,60 @@
-"use client"; // Essential for using React hooks
-
-import Image from "next/image";
-import { useEffect } from "react";
+"use client";
+import { useEffect, useState } from "react";
 
 export const Logo = () => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  
   useEffect(() => {
-    // Only run on client side
-    if (typeof window !== 'undefined') {
-      const sparkles = document.querySelectorAll('.sparkle');
-      sparkles.forEach(sparkle => {
-        sparkle.setAttribute('style', `top: ${Math.random() * 80}%; left: ${Math.random() * 80}%;`);
+    if (typeof window !== "undefined" && isHovered) {
+      const sparkles = document.querySelectorAll(".sparkle");
+      sparkles.forEach((sparkle) => {
+        sparkle.setAttribute(
+          "style",
+          `top: ${Math.random() * 80}%; 
+          left: ${Math.random() * 80}%; 
+          transform: rotate(${Math.random() * 360}deg);`
+        );
       });
     }
-  }, []);
+  }, [isHovered]);
 
   return (
-    <div className="group relative flex items-center space-x-2 cursor-pointer">
-      {/* Sparkles with random positioning */}
-      {[...Array(3)].map((_, i) => (
-        <div 
+    <div
+      className="group relative flex items-center space-x-2 cursor-pointer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Animated particles with dynamic movement */}
+      {[...Array(7)].map((_, i) => (
+        <div
           key={i}
-          className="sparkle absolute w-1 h-1 bg-yellow-400 rounded-full opacity-0 
-            group-hover:opacity-100 transition-opacity duration-300 animate-spin"
+          className={`sparkle absolute w-1 h-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full 
+            opacity-0 transition-all duration-1000 ${isHovered ? "group-hover:opacity-100" : ""} 
+            animate-particle-${i % 3}`}
         />
       ))}
 
-      {/* Animated logo container */}
-      <div className="relative transition-transform duration-500 group-hover:rotate-[25deg]">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full 
-          opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-300" />
-        <Image
-          width={40}
-          height={40}
+      {/* Main logo GIF container without animation */}
+      <div className="relative">
+        <img
+          src="/logo.gif"
           alt="Yegna School logo"
-          src="/logo.svg"
           className="drop-shadow-lg hover:drop-shadow-xl transition-all duration-300 z-10 relative"
         />
       </div>
 
-      {/* Gradient text with underline animation */}
-      <span className="text-xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 
-        bg-clip-text text-transparent relative transition-all duration-500 group-hover:translate-x-1">
+      {/* Animated and styled text with unique font and effects */}
+      <span
+        className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 
+        bg-clip-text text-transparent relative transition-all duration-500 group-hover:translate-x-1
+        animate-text-glow font-serif" // Changed to a serif font
+      >
         Yegna
-        <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-blue-400 to-purple-400 
-          transition-all duration-500 group-hover:w-full" />
+        <span
+          className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-blue-400 to-purple-400 
+          transition-all duration-500 group-hover:w-full group-hover:delay-300"
+        />
       </span>
     </div>
   );
