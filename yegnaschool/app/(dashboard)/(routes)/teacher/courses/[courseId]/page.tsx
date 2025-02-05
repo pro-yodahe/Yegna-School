@@ -6,6 +6,7 @@ import { LayoutDashboard } from "lucide-react";
 import { TitleForm } from "./_components/title-form";
 import { DescriptionForm } from "./_components/description-from";
 import { ImageForm } from "./_components/image-from";
+import { CategoryForm } from "./_components/category-from";
 
 export default async function CourseIdPage({ params }: { params: { courseId: string } }) {
     const { userId } = await auth();
@@ -19,9 +20,15 @@ export default async function CourseIdPage({ params }: { params: { courseId: str
 
     const course = await db.course.findUnique({
         where: {
-            id: params.courseId, // ✅ Corrected
+            id: params.courseId, 
         },
     });
+
+    const categories = await db.category.findMany({
+        orderBy: {
+            name: "asc",
+        },
+    })
 
     if (!course) {
         return redirect("/");
@@ -57,9 +64,24 @@ export default async function CourseIdPage({ params }: { params: { courseId: str
                         <h2 className="text-xl">Customize your course</h2>
                     </div>
 
-                    <TitleForm initialData={course} courseId={course.id} />
+                    <TitleForm 
+                    initialData={course} 
+                    courseId={course.id} />
                     <DescriptionForm initialData={course} courseId={course.id} />
-                    <ImageForm initialData={course} courseId={course.id} />
+                    <ImageForm 
+                    initialData={course} 
+                    courseId={course.id} 
+                    />
+
+                    <CategoryForm 
+                    initialData={course} 
+                    courseId={course.id} 
+                    options={categories.map((category) => ({
+                        label: category.name,
+                        value: category.id,
+                    }))}
+                    
+                    />
                 </div>
             </div>
         </div>
